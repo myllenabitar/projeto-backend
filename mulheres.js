@@ -1,6 +1,6 @@
 const express = require("express") //aqui estou iniciando o express
 const router = express.Router() //aqui estou configurando a primeira parte da rota
-const { v4: uuidv4 } = require('uuid');
+
 
 const conectaBancoDeDados = require('./bancoDeDados') //aqui estou ligando ao arquivo bancoDeDados
 conectaBancoDeDados() // chamando a função que conecta o banco de dados
@@ -26,25 +26,25 @@ async function mostraMulheres(request, response){
 }
 
 //post
-function criaMulher(request, response){
-    const novaMulher = {
-        id:uuidv4(),
+async function criaMulher(request, response){
+    const novaMulher = new Mulher ({
         nome: request.body.name,
         imagem: request.body.imagem,
-        minibio: request.body.minibio
-    }
-    mulheres.push(novaMulher)
+        minibio: request.body.minibio,
+        citacao: request.body.citacao
+    })
+    try{
+        const mulherCriada = await novaMulher.save()
+        response.status(201).json(mulherCriada)
+   } catch (erro){
 
-    response.json(mulheres)
+   }
 }
 //patch
-function corrigeMulher(request, response){
-    function encontrarMulher(mulher){
-        if (mulher.id === request.params.id){
-            return mulher
-        }
-    }
-    const mulherEncontrada = mulheres.find(encontrarMulher)
+async function corrigeMulher(request, response){
+    try{
+    const mulherEncontrada = await Mulher.findById(request.params.id)
+    
     if (request.body.nome){
         mulherEncontrada.nome = request.body.nome
     }
@@ -54,19 +54,25 @@ function corrigeMulher(request, response){
     if (request.body.imagem){
         mulherEncontrada.imagem = request.body.imagem
     }
-    response.json(mulheres)
+    if (request.body.citacao){
+        mulherEncontrada.citacao = request.body.citacao
+    }
+    }catch (erro){
+    console.log(erro)
+}
+    response.json(mulherAtualizadaNoBancoDeDados)
 }
 //delete
-function deletaMulheres(request, response){
-    function todasMenosEla(mulher){
-        if(mulher.id === request.params.id){
-            return mulher
-        }
-    }
-    const mulheresQueFicam = mulheres.filter(todasMenosEla)
+async function deletaMulheres(request, response){
+    try{
+        await Mulher.findByIdAndDelete(request.params.id)
+        response.json({mensagem:'Mulher deletada com sucesso!'})
 
-    response.json(mulheresQueFicam)
+    } catch (erro){
+        console.log(erro)
+    }
 }
+    
 //porta
 function mostraPorta() {
     console.log("Servidor criado e rodando na porta ", porta)
