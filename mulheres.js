@@ -1,35 +1,28 @@
 const express = require("express") //aqui estou iniciando o express
 const router = express.Router() //aqui estou configurando a primeira parte da rota
 const { v4: uuidv4 } = require('uuid');
+
+const conectaBancoDeDados = require('./bancoDeDados') //aqui estou ligando ao arquivo bancoDeDados
+conectaBancoDeDados() // chamando a função que conecta o banco de dados
+
+const Mulher = require('./mulherModel')
+
 const app = express() // aqui estou iniciando o app
 app.use(express.json())
 const porta = 3333 // aqui estou criando a porta
 
-// aqui estou criando a lista inicial de mulheres
-const mulheres = [
-    {
-        id:'1',
-        nome: 'myllena de souza bitar',
-        imagem:'https://www.linkedin.com/in/myllena-de-souza-bitar-272213140/',
-        minibio:'Dentista e desenvolvedora'
-    },
-    {
-        id:'2',
-        nome: 'myllena de souza bitar',
-        imagem:'https://www.linkedin.com/in/myllena-de-souza-bitar-272213140/',
-        minibio:'Dentista e desenvolvedora'
-    },
-    {
-        id:'3',
-        nome: 'myllena de souza bitar',
-        imagem:'https://www.linkedin.com/in/myllena-de-souza-bitar-272213140/',
-        minibio:'Dentista e desenvolvedora'
-    }
-]
+
 
 //GET
-function mostraMulheres(request, response){
-    response.json(mulheres)
+async function mostraMulheres(request, response){
+    try{
+        const mulheresVindasDoBancoDeDados = await mulher.find()
+
+        response.json(mulheresVindasDoBancoDeDados)
+    }catch (erro) {
+        console.log(erro)
+    }
+   
 }
 
 //post
