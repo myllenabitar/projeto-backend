@@ -1,5 +1,6 @@
 const express = require("express") //aqui estou iniciando o express
 const router = express.Router() //aqui estou configurando a primeira parte da rota
+const cors = require('cors')//trazendo o pacote cors
 
 
 const conectaBancoDeDados = require('./bancoDeDados') //aqui estou ligando ao arquivo bancoDeDados
@@ -9,6 +10,7 @@ const Mulher = require('./mulherModel')
 
 const app = express() // aqui estou iniciando o app
 app.use(express.json())
+app.use(cors())
 const porta = 3333 // aqui estou criando a porta
 
 
