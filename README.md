@@ -1,10 +1,8 @@
-# projeto-backend
 
-my first server API, in my studys about NODE.JS.
 
-<h1 align="center">API STAR WARS </h1>
+<h1 align="center">Projeto Backend </h1>
 
-<img src="https://github.com/user-attachments/assets/36ef6d4e-e394-48d9-86d9-831be9e488df" alt="logo star wars">
+
 
 
 <h2>Badges:</h2>
